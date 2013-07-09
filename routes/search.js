@@ -14,8 +14,10 @@ exports.search = function(req, res){
           }
       }
   }; 
-  elasticSearchClient.search('jdbc', 'jdbc', query)
+  var river = req.body.searchtype;
+  elasticSearchClient.search(river, 'jdbc', query)
     .on('data', function(data) {
+        console.log("results from " + river);
         res.render('stream', {'data' : data});
     })
     .on('error', function(error){

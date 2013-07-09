@@ -6,7 +6,8 @@
     </title>
     <link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <link rel='stylesheet' href='/bootstrap/css/bootstrap-responsive.css'>    
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap-responsive.css'>  
+    <link rel='stylesheet' href='/stylesheets/style.css'>
   </head>
   <body>
     <div>
@@ -17,6 +18,11 @@
     <form class="form-search" action="/search" method="post">
       <label for="phrase">Search Phrase: </label>
       <input type="text" class="input-medium search-query" name="phrase"></input>
+      <select name="searchtype">
+  		<option>empleados</option>
+  		<option>regimenes</option>
+  		<option>departamentos</option>
+       </select>
       <button type="submit" class="btn">Search</button>
     </form>
     </div>
