@@ -1,3 +1,4 @@
+var Q = require('Q');
 var ElasticSearchClient = require('elasticsearchclient'),
     serverOptions = {
     	host: 'localhost',
@@ -15,12 +16,13 @@ exports.search = function(req, res){
       }
   }; 
   var river = req.body.searchtype;
-  elasticSearchClient.search(river, 'jdbc', query)
-    .on('data', function(data) {
-        res.render('stream', {'data' : data});
-    })
-    .on('error', function(error){
-        res.render(500,'Error');
-    })
-    .exec()  
+  var deferred = Q.defer();
+  var search = elasticSearchClient.search(river, 'jdbc', query);
+  search.on('data', function(data) { 
+      deferred.resolve(res.render('stream', {'data' : data}));
+  });
+  search.on('error', function(error){
+      deferred.reject(res.render(500,'Error'));
+  });
+  search.exec();  
 };
