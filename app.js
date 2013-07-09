@@ -1,13 +1,10 @@
 var express = require('express')
   , routes = require('./routes')
   , search = require('./routes/search')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
 
 var app = express();
-
-// all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
