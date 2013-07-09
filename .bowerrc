@@ -1,5 +1,5 @@
 {
-  "directory": "public",
+  "directory": "src/public",
   "json": "bower.json",
   "searchpath": [
     "https://bower.herokuapp.com"
