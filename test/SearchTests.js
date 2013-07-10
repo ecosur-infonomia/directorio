@@ -1,3 +1,5 @@
+/* Simple integration test to get started */
+
 ElasticSearchClient = require('elasticsearchclient');
 var serverOptions = {
     host: 'localhost',
