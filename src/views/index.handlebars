@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>
-        <%= title %>
-    </title>
+    <title>{{title}}</title>
     <link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <link rel='stylesheet' href='/bootstrap/css/bootstrap-responsive.css'>  
     <link rel='stylesheet' href='/stylesheets/style.css'>
   </head>
   <body>
+    <ul class="breadcrumb">
+    	<li><a href="/">directorio</a></li>
+    </ul>
     <div>
-    <h2><%= title %></h2>
-    <p class="lead">
-        Enter an elasticsearch phrase below to search the river.
-    </p>
+    <h2>{{title}}</h2>
     <form class="form-search" action="/search" method="post">
-      <label for="phrase">Search Phrase: </label>
-      <input type="text" class="input-medium search-query" name="phrase"></input>
-      <select name="searchtype">
-  		<option>empleados</option>
-  		<option>regimenes</option>
-  		<option>departamentos</option>
-       </select>
+      <label for="phrase">Frase: </label>
+      <input type="text" class="input-medium search-query" name="phrase">
       <button type="submit" class="btn">Search</button>
     </form>
+    </div>
+    <div>
+      <ul class="inline">
+      {{#each data}}
+      	<li><a href="">{{this._source.NO10_NOMBRE}}</a></li>
+      {{/each}}
+      </ul>
     </div>
   </body>
 </html>

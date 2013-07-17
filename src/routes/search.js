@@ -5,45 +5,114 @@ var ElasticSearchClient = require('elasticsearchclient'),
     	port: 9200
 	},
     elasticSearchClient = new ElasticSearchClient(serverOptions);
-var _ = require('underscore');
 
-/* Search the stream with posted data */
+/* Perform a search */
 exports.search = function(req, res){
-  var query = {
+  var size = req.size || 10,
+      current = req.from || 0;
+  var query_string = {
+      "from": current,
+  	  "size": size,
       "query":{
           "query_string":{
               "query" : req.body.phrase
           }
       }
   }; 
-  var deferred = Q.defer();
-  var search = elasticSearchClient.search(req.body.searchtype, 'jdbc', query);
-    
-  /* Fulfillment and error handling */
-  search.on('data', function(data) {
-      deferred.resolve(res.render('stream', {'data' : extract(data)}));
-  });
+  var promise = Q.defer();
+  var search = elasticSearchClient.search('admin', 'jdbc', query_string);
   
+  /* error callback */
   search.on('error', function(error){
-      deferred.reject(res.render(500,'Error'));
+      promise.reject(res.status(500).send('Error'));
+  });
+
+  /* data callback */
+  search.on('data', function(jsonStr) {
+      var data = JSON.parse(jsonStr);
+      var hits = data.hits.hits;
+      console.log(hits);
+      console.log("total hits: " + data.hits.total);
+      
+      /* Create the page list to pass on to the view engine 
+        for individual page numbering if desired */
+      var pages = [];
+      var number = (data.hits.total) / size;
+      if (number > 1) {
+      	for (var i = 0; i < number; i++) {
+      		pages.push({"page" : i + 1 });
+      	}
+      }
+      console.log("Pages: " + number);
+      var back, next;
+      (current >= size) ? back = current - size : back = 0;
+      next = current + size;
+      
+      promise.resolve(res.render('admin', {
+          'query' : req.body.phrase, 
+          'data'  : hits,	// Returned search hits
+          'size'  : size,   // Number of pages to return per call
+          'pages' : pages,  // Number of pages total in the search
+          'back'  : back,   // from parameter for back 
+          'next'  : next    // from parameter for next
+      }));
   });
     
-  /* Run our search */
+  /* Execute the search */
   search.exec();
 
-  /* Consolidation of JSON objects */
-  function extract(jsonStr) {
-      try {
-      	var data = JSON.parse(jsonStr);
-        var hits = data.hits.hits;
-      	/* Use underscore to consolidate the objects */
-        console.log("total hits: " + data.hits.total);
-        console.log("array size: " + hits.length);  
+};
 
-      } catch (Exception) {
-      	console.log("Error in conosolidation method!");
+/* Page through a search stream */
+exports.page = function(req, res) {
+    var current = parseInt(req.query.page);
+    var size = parseInt(req.query.size);
+
+    var query_string =  {
+      "from": current,
+      "size": size,
+      "query":{
+        "query_string": { "query": req.query.query }
       }
+    }
+
+  var promise = Q.defer();
+  var search = elasticSearchClient.search('admin', 'jdbc', query_string);
+
+  /* error callback */
+  search.on('error', function(error){
+      promise.reject(res.status(500).send('Error'));
+  });
+
+  /* data callback */
+  search.on('data', function(jsonStr) {
+      var data = JSON.parse(jsonStr);
+      var hits = data.hits.hits;
       
-      return JSON.stringify(hits);
-  }
+      /* Create the page list to pass on to the view engine 
+        for individual page numbering if desired */
+      var pages = [];
+      var number = (data.hits.total) / size;
+      if (number > 1) {
+        for (var i = 0; i < number; i++) {
+          pages.push({"page" : i + 1 });
+        }
+      }
+
+      var back, next;
+      (current >= size) ? back = current - size : back = 0;
+      next = current + size;
+      
+      promise.resolve(res.render('admin', {
+          'query' : req.query.query, 
+          'data'  : hits,              // Returned search hits
+          'size'  : size,              // Number of pages to return per call
+          'pages' : pages,             // Number of pages total in the search
+          'back'  : back,              // from parameter for back 
+          'next'  : next               // from parameter for next
+      }));
+  });
+  
+  search.exec(); // Run the next query to ES 
+  
 };
