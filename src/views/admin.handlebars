@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap.min.css' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <link rel='stylesheet' href='/bootstrap/css/bootstrap-responsive.css'>  
+    <link rel='stylesheet' href='/stylesheets/style.css'>
+  </head>
+  <body>
+    <ul class="breadcrumb">
+    	<li><a href="/">directorio</a></li>
+        <li>/&nbsp;<a>buscada</a></li>
+    </ul>  
+    <div>
+        <h2>Resultados</h2>
+        {{#unless data}}
+        	<p class="text-error">Ningun encontrado!</p>
+        {{/unless}}
+        {{#each data}}
+    	<div class="result">
+            <dl class="inner-list"> 
+                <dt class="text-success">Score</dt>
+                <dd class="text-success">{{this._score}}</dd>
+            </dl>
+            <dl class="inner-list">
+                <dt>Nombre</dt>
+                <dd>{{_source.NO01_NOM_EMP}}</dd>
+                <dt>Puesto</dt>
+                <dd>{{_source.NO01_PUESTO}}</dd>
+                <dt>Departamento</dt>
+                <dd>{{_source.NO20_NOMBRE}}</dd>
+                <dt>Tipo</dt>
+                <dd>{{_source.NO10_NOMBRE}}</dd>
+                {{#if _source.NO01_TELEFONO1}}
+                <dt>Telefono</dt>
+                <dd>{{_source.NO01_TELEFONO1}}</dd>
+                {{/if}}
+                {{#if _source.NO01_CORREO1}}
+                <dt>Correo</dt>
+                <dd>{{_source.NO01_CORREO1}}</dd>
+                {{/if}}    
+            </dl>
+        </div>
+        {{/each}}
+    </div>
+    {{#if pages}}
+    <div id="page-footer" class="pagination-centered">
+       <ul class="pager">
+           <li><a href="/search?query={{query}}&size={{size}}&page={{back}}">Previous</a></li>
+           <li><a href="/search?query={{query}}&size={{size}}&page={{next}}">Next</a></li>
+       </ul>  
+    </div>
+    {{/if}}
+  </body>
+</html>
