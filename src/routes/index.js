@@ -12,6 +12,9 @@ var Elastic = require('elasticsearchclient'),
  * The index function populates and returns the index page 
  */
 exports.index = function(req, res){
+  var current = (!req.query.page) ? 10 : parseInt(req.query.page);
+  var size = (!req.query.size) ? 10 : parseInt(req.query.size);
+
    /* Get all the regimenes names from Admin DB, if this 
       increases beyond 100 in the future, the size parameter
       must be increased as well. */

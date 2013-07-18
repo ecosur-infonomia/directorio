@@ -8,8 +8,8 @@ var ElasticSearchClient = require('elasticsearchclient'),
 
 /* Perform a search */
 exports.search = function(req, res){
-  var size = req.size || 10,
-      current = req.from || 0;
+  var size = req.body.size || 10,
+      current = req.body.from || 0;
   var query_string = {
       "from": current,
   	  "size": size,
@@ -17,7 +17,10 @@ exports.search = function(req, res){
           "query_string":{
               "query" : req.body.phrase
           }
-      }
+      },
+      "sort" : [
+        { "NO01_APELLIDO_PAT" : {"missing" : "_last"} }
+    ]
   }; 
   var promise = Q.defer();
   var search = elasticSearchClient.search('admin', 'jdbc', query_string);
@@ -73,7 +76,10 @@ exports.page = function(req, res) {
       "size": size,
       "query":{
         "query_string": { "query": req.query.query }
-      }
+      },
+      "sort" : [
+        { "NO01_APELLIDO_PAT" : {"missing" : "_last"} }
+      ]
     }
 
   var promise = Q.defer();
