@@ -3,21 +3,32 @@ var express = require('express'),
   routes = require('./routes'),
   search = require('./routes/search'),
   http = require('http'),
-  path = require('path');
+  path = require('path'),
+  handlebars =require('Handlebars'),
+  hhelpers = require('helper-lib');
+
+/* Register the helpers in helper-lib with an instance of handlebars */
+hhelpers.register(handlebars);
 
 var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
+
 /* Use express3-handlebars as default render engine, with 
-   no layout. */
-app.engine('handlebars', exphbs({defaultLayout: false}));
+   no layout and our custom handlebars object */
+app.engine('handlebars', exphbs({
+	defaultLayout: false,
+	handlebars : handlebars
+}));
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(app.router);
+
+/* for public resources, e.g. css, js */
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only

@@ -25,7 +25,10 @@ exports.index = function(req, res){
           "query_string":{
               "query" : "*"
           }
-      }
+      },
+      "sort" : [
+        { "NO10_NOMBRE" : { "order" : "asc", "mode" : "avg"} }
+      ]
    };
    
    var promise = Q.defer();

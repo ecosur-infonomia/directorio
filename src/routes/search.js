@@ -19,6 +19,7 @@ exports.search = function(req, res){
           }
       },
       "sort" : [
+        "_score",
         { "NO01_APELLIDO_PAT" : {"missing" : "_last"} }
     ]
   }; 
@@ -34,8 +35,6 @@ exports.search = function(req, res){
   search.on('data', function(jsonStr) {
       var data = JSON.parse(jsonStr);
       var hits = data.hits.hits;
-      console.log(hits);
-      console.log("total hits: " + data.hits.total);
       
       /* Create the page list to pass on to the view engine 
         for individual page numbering if desired */
@@ -46,7 +45,7 @@ exports.search = function(req, res){
       		pages.push({"page" : i + 1 });
       	}
       }
-      console.log("Pages: " + number);
+
       var back, next;
       (current >= size) ? back = current - size : back = 0;
       next = current + size;
@@ -78,6 +77,7 @@ exports.page = function(req, res) {
         "query_string": { "query": req.query.query }
       },
       "sort" : [
+        "_score",
         { "NO01_APELLIDO_PAT" : {"missing" : "_last"} }
       ]
     }
