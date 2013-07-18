@@ -15,10 +15,9 @@
         <h2>Resultados</h2>
         {{#each data}}
     	<div class="result">
-            <dl class="inner-list"> 
-                <dt class="text-success">Score</dt>
-                <dd class="text-success">{{this._score}}</dd>
-            </dl>
+            <div class="progress">
+              <div class="bar bar-success" style="width: {{multiply this._score 100}}%;"></div>
+            </div>
             <dl class="inner-list">
                 <dt>Nombre</dt>
                 <dd>{{_source.NO01_NOM_EMP}}</dd>
