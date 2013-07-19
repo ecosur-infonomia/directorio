@@ -11,7 +11,7 @@ var domain = require('domain');
 exports.search = function(req, res){
   var d = domain.create();
   d.on("error", function(error) {
-      console.log("Domain Error!", error);
+      console.log("Error!", error);
   });
   d.add(req);
   d.add(res);
@@ -76,7 +76,7 @@ exports.search = function(req, res){
 exports.page = function(req, res) {
   var d = domain.create();
   d.on("error", function(error) {
-      console.log("Domain Error!", error);
+      console.log("Error!", error);
   });
   d.add(req);
   d.add(res);
