@@ -12,7 +12,8 @@
     "ejs": "~0.8.4",
     "elasticsearchclient": "~0.5.3",
     "q": "~0.9.6",
-    "helper-lib": "~0.2.5"
+    "helper-lib": "~0.2.5",
+    "domain": "~0.1.5"
   },
   "devDependencies": {
     "grunt": "~0.4.1"
