@@ -1,3 +1,5 @@
 scripts/elasticsearch-plugin.sh
 node_modules
 test/Resources/SearchData.json
+src/public/bootstrap
+src/public/jquery
