@@ -1,9 +1,12 @@
 module.exports = function(grunt) {
-
-  // Project configuration.
+  grunt.loadNpmTasks('grunt-bower-task');
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json')
-   }
-  );
+    bower: {
+      install: { 
+        targetDir: 'src/public'
+      }
+    }
+ });
 
-};
+ grunt.registerTask('default', ['bower']); 
+}
