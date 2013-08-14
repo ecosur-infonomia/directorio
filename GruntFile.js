@@ -12,7 +12,10 @@ module.exports = function(grunt) {
           archive: 'dist/directorio.zip'
         },
         files: [ 
-          {src: ['src/**'], dest: 'directorio'}
+          {src: ['src/**'], dest: 'directorio'},
+          {src: ['*.json'], dest: 'directorio'},
+          {src: ['GruntFile.js'], dest: 'directorio'},
+          {src: ['scripts/**'], dest:'directorio'}
         ]
       }
     },

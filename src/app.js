@@ -4,7 +4,7 @@ var express = require('express'),
   search = require('./routes/search'),
   http = require('http'),
   path = require('path'),
-  handlebars =require('Handlebars'),
+  handlebars =require('handlebars'),
   hhelpers = require('helper-lib');
 
 /* Register the helpers in helper-lib with an instance of handlebars */
@@ -40,6 +40,6 @@ app.get('/', routes.index);
 app.post('/search', search.search);
 app.get('/search', search.page);
 
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'),'127.0.0.1', function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
