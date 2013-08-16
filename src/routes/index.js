@@ -1,13 +1,13 @@
 /* Copyright 2013, Andrew Waterman and ECOSUR */
 
-var Q = require('q');
-var Elastic = require('elasticsearchclient'),
+var Q = require('q'),
+   Elastic = require('elasticsearchclient'),
    serverOptions = {
        host: 'localhost',
        port: 9200
    },
-   client = new Elastic(serverOptions);
-var domain = require('domain');
+   client = new Elastic(serverOptions),
+   domain = require('domain');
 
 /* 
  * The index function populates and returns the index page 

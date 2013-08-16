@@ -1,11 +1,11 @@
-var Q = require('Q');
-var ElasticSearchClient = require('elasticsearchclient'),
+var Q = require('Q'),
+    ElasticSearchClient = require('elasticsearchclient'),
     serverOptions = {
     	host: 'localhost',
     	port: 9200
 	},
-    elasticSearchClient = new ElasticSearchClient(serverOptions);
-var domain = require('domain');
+    elasticSearchClient = new ElasticSearchClient(serverOptions),
+    domain = require('domain');
 
 /* Perform a search */
 exports.search = function(req, res){
@@ -58,7 +58,7 @@ exports.search = function(req, res){
         (current >= size) ? back = current - size : back = 0;
         next = current + size;
         
-        promise.resolve(res.render('admin', {
+        promise.resolve(res.render('search', {
             'query' : req.body.phrase, 
             'data'  : hits, // Returned search hits
             'size'  : size,   // Number of pages to return per call
@@ -124,7 +124,7 @@ exports.page = function(req, res) {
         (current >= size) ? back = current - size : back = 0;
         next = current + size;
         
-        promise.resolve(res.render('admin', {
+        promise.resolve(res.render('search', {
             'query' : req.query.query, 
             'data'  : hits,              // Returned search hits
             'size'  : size,              // Number of pages to return per call
