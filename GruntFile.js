@@ -21,11 +21,9 @@ module.exports = function(grunt) {
     },
     clean: ["dist"]
   });
-
   grunt.loadNpmTasks('grunt-bower-task');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.registerTask('install',['bower']);
   grunt.registerTask('default', ['clean','compress']); 
-  
 }
