@@ -29,7 +29,7 @@ app.use(express.methodOverride());
 app.use(app.router);
 
 /* for public resources, e.g. css, js */
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express["static"](path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {

@@ -18,6 +18,7 @@ exports.index = function(req, res){
   var d = domain.create();
   d.on("error", function(error) {
       console.log("Error!", error);
+      res.render('500', {status: 500, error : error });
   });
   d.add(req);
   d.add(res);
@@ -40,10 +41,10 @@ exports.index = function(req, res){
           { "NO10_NOMBRE" : { "order" : "asc", "mode" : "avg"} }
         ]
      };
-     
+
      var promise = Q.defer();
      var search = client.search('reg', 'jdbc', query);
-      
+
      /* Fulfillment and error handling */
      search.on('data', function(jsonStr) {
         var data = JSON.parse(jsonStr);
@@ -52,9 +53,9 @@ exports.index = function(req, res){
             'title': 'Directorio Interna de ECOSUR',
             'data' : hits}));
      });
-    
+
      search.on('error', function(error){
-        promise.reject(res.render(500, error));
+        promise.reject(res.render(500, { status: 500, error: error} ));
      });
      /* Run our search */
      search.exec();

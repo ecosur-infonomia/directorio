@@ -12,6 +12,7 @@ exports.search = function(req, res){
   var d = domain.create();
   d.on("error", function(error) {
       console.log("Error!", error);
+      res.render(500, { status: 500, error: error});
   });
   d.add(req);
   d.add(res);
@@ -33,7 +34,7 @@ exports.search = function(req, res){
     }; 
     var promise = Q.defer();
     var search = elasticSearchClient.search('admin', 'jdbc', query_string);
-    
+
     /* error callback */
     search.on('error', function(error){
         promise.reject(res.status(500).send('Error'));
@@ -43,7 +44,7 @@ exports.search = function(req, res){
     search.on('data', function(jsonStr) {
         var data = JSON.parse(jsonStr);
         var hits = data.hits.hits;
-        
+
         /* Create the page list to pass on to the view engine 
           for individual page numbering if desired */
         var pages = [];
@@ -57,7 +58,7 @@ exports.search = function(req, res){
         var back, next;
         (current >= size) ? back = current - size : back = 0;
         next = current + size;
-        
+
         promise.resolve(res.render('search', {
             'query' : req.body.phrase, 
             'data'  : hits, // Returned search hits
@@ -66,7 +67,7 @@ exports.search = function(req, res){
             'back'  : back,   // from parameter for back 
             'next'  : next    // from parameter for next
         }));
-    });      
+    });
     /* Execute the search */
     search.exec();
 
@@ -109,7 +110,7 @@ exports.page = function(req, res) {
     search.on('data', function(jsonStr) {
         var data = JSON.parse(jsonStr);
         var hits = data.hits.hits;
-        
+
         /* Create the page list to pass on to the view engine 
           for individual page numbering if desired */
         var pages = [];
@@ -123,7 +124,7 @@ exports.page = function(req, res) {
         var back, next;
         (current >= size) ? back = current - size : back = 0;
         next = current + size;
-        
+
         promise.resolve(res.render('search', {
             'query' : req.query.query, 
             'data'  : hits,              // Returned search hits
