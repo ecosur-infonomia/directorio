@@ -1,9 +1,9 @@
 var Q = require('Q'),
     ElasticSearchClient = require('elasticsearchclient'),
     serverOptions = {
-    	host: 'localhost',
-    	port: 9200
-	},
+        host: 'localhost',
+        port: 9200
+    },
     elasticSearchClient = new ElasticSearchClient(serverOptions),
     domain = require('domain');
 

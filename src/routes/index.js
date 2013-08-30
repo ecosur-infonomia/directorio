@@ -22,8 +22,8 @@ exports.index = function(req, res){
   d.add(req);
   d.add(res);
   d.run(function() {
-    var current = (!req.query.page) ? 10 : parseInt(req.query.page);
-    var size = (!req.query.size) ? 10 : parseInt(req.query.size);
+    var current = (!req.query.page) ? 10 : parseInt(req.query.page, 10);
+    var size = (!req.query.size) ? 10 : parseInt(req.query.size, 10);
 
      /* Get all the regimenes names from Admin DB, if this 
         increases beyond 100 in the future, the size parameter
